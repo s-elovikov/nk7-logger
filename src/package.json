@@ -1,0 +1,18 @@
+{
+  "unity": "6000.0",
+  "name": "com.nk7.logger",
+  "version": "1.0.0",
+  "dependencies": {
+    "org.nuget.zlogger": "2.5.10"
+  },
+  "author": {
+    "name": "lsd7nk",
+    "url": "https://github.com/s-elovikov"
+  },
+  "keywords": [
+    "Logs",
+    "Logger"
+  ],
+  "displayName": "Nk7 Logger",
+  "description": "Lightweight logs service"
+}
