@@ -10,7 +10,7 @@ namespace Nk7.Logger.Editor
     [InitializeOnLoad]
     internal static class CscRspInstaller
     {
-        private const string LangVersionLine = $"-langversion:{LangVersion}";
+        private const string LangVersionLine = $"-langversion:10";
         private const string LangVersion = "10";
 
         private static readonly string RspPath = Path.Combine(Application.dataPath, "csc.rsp");
