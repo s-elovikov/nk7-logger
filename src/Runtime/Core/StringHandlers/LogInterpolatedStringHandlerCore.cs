@@ -1,12 +1,12 @@
 using Microsoft.Extensions.Logging;
-using System.Text;
+using Cysharp.Text;
 using System;
 
 namespace Nk7.Logger
 {
     internal ref struct LogInterpolatedStringHandlerCore
     {
-        private StringBuilder _builder;
+        private Utf16ValueStringBuilder _builder;
         private readonly bool _enabled;
 
         public bool Enabled => _enabled;
@@ -18,19 +18,32 @@ namespace Nk7.Logger
             LogLevel level,
             out bool enabled)
         {
-            enabled = logger.IsEnabled(level);
+            enabled = logger != null && logger.IsEnabled(level);
+
             _enabled = enabled;
-            _builder = enabled ? new StringBuilder(literalLength) : null;
+            _builder = enabled
+                ? ZString.CreateStringBuilder(true)
+                : default;
         }
 
         public void AppendLiteral(string value)
         {
-            if (_enabled) _builder.Append(value);
+            if (!_enabled)
+            {
+                return;
+            }
+
+            _builder.Append(value);
         }
 
         public void AppendFormatted<T>(T value)
         {
-            if (_enabled) _builder.Append(value);
+            if (!_enabled)
+            {
+                return;
+            }
+
+            _builder.Append(value);
         }
 
         public void AppendFormatted<T>(T value, string format)
@@ -102,7 +115,9 @@ namespace Nk7.Logger
             }
 
             string s = _builder.ToString();
-            _builder.Clear();
+            
+            _builder.Dispose();
+            _builder = default;
 
             return s;
         }
