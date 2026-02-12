@@ -18,6 +18,46 @@ namespace Nk7.Logger
             return _logger.IsEnabled(logLevel);
         }
 
+        public void Debug(string message)
+        {
+            if (!IsEnabled(LogLevel.Debug))
+            {
+                return;
+            }
+
+            _logger.LogDebug(message);
+        }
+
+        public void Information(string message)
+        {
+            if (!IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
+
+            _logger.LogInformation(message);
+        }
+
+        public void Warning(string message)
+        {
+            if (!IsEnabled(LogLevel.Warning))
+            {
+                return;
+            }
+
+            _logger.LogWarning(message);
+        }
+
+        public void Error(string message)
+        {
+            if (!IsEnabled(LogLevel.Error))
+            {
+                return;
+            }
+
+            _logger.LogError(message);
+        }
+
         public void Debug([InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler)
         {
             if (!handler.Enabled)

@@ -7,12 +7,10 @@ namespace Nk7.Logger
 {
     internal sealed class UnityDebugFormatter : IZLoggerFormatter
     {
-        public const char CRITICAL_PREFIX = 'C';
         public const char ERROR_PREFIX = 'E';
         public const char WARNING_PREFIX = 'W';
         public const char INFORMATION_PREFIX = 'I';
         public const char DEBUG_PREFIX = 'D';
-        public const char TRACE_PREFIX = 'T';
         public const char UNKNOWN_PREFIX = '?';
 
         public const string PART_OF_PREFIX = "[{0}]";
@@ -52,12 +50,10 @@ namespace Nk7.Logger
         {
             return string.Format(PART_OF_PREFIX, level switch
             {
-                LogLevel.Critical => CRITICAL_PREFIX,
                 LogLevel.Error => ERROR_PREFIX,
                 LogLevel.Warning => WARNING_PREFIX,
                 LogLevel.Information => INFORMATION_PREFIX,
                 LogLevel.Debug => DEBUG_PREFIX,
-                LogLevel.Trace => TRACE_PREFIX,
                 _ => UNKNOWN_PREFIX
             });
         }

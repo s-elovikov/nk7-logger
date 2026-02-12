@@ -8,6 +8,11 @@ namespace Nk7.Logger
     {
         bool IsEnabled(LogLevel logLevel);
 
+        void Debug(string message);
+        void Information(string message);
+        void Warning(string message);
+        void Error(string message);
+
         void Debug([InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler);
         void Information([InterpolatedStringHandlerArgument("")] ref InformationLogInterpolatedStringHandler handler);
         void Warning([InterpolatedStringHandlerArgument("")] ref WarningLogInterpolatedStringHandler handler);
