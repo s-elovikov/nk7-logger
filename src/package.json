@@ -1,7 +1,7 @@
 {
   "unity": "6000.0",
   "name": "com.nk7.logger",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "dependencies": {
     "org.nuget.zlogger": "2.5.10"
   },
