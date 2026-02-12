@@ -60,11 +60,9 @@ namespace Nk7.Logger
                 {
                     case UnityDebugFormatter.INFORMATION_PREFIX:
                     case UnityDebugFormatter.DEBUG_PREFIX:
-                    case UnityDebugFormatter.TRACE_PREFIX:
                         Debug.Log(message);
                         break;
 
-                    case UnityDebugFormatter.CRITICAL_PREFIX:
                     case UnityDebugFormatter.ERROR_PREFIX:
                         Debug.LogError(message);
                         break;
