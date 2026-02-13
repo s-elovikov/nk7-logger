@@ -18,6 +18,16 @@ namespace Nk7.Logger
             return _logger.IsEnabled(logLevel);
         }
 
+        public void Trace(string message)
+        {
+            if (!IsEnabled(LogLevel.Trace))
+            {
+                return;
+            }
+
+            _logger.LogTrace(message);
+        }
+
         public void Debug(string message)
         {
             if (!IsEnabled(LogLevel.Debug))
@@ -56,6 +66,26 @@ namespace Nk7.Logger
             }
 
             _logger.LogError(message);
+        }
+
+        public void Critical(string message)
+        {
+            if (!IsEnabled(LogLevel.Critical))
+            {
+                return;
+            }
+
+            _logger.LogCritical(message);
+        }
+
+        public void Trace([InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler)
+        {
+            if (!handler.Enabled)
+            {
+                return;
+            }
+
+            _logger.LogTrace(handler.ToStringAndClear());
         }
 
         public void Debug([InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler)
@@ -98,6 +128,26 @@ namespace Nk7.Logger
             _logger.LogError(handler.ToStringAndClear());
         }
 
+        public void Critical([InterpolatedStringHandlerArgument("")] ref CriticalLogInterpolatedStringHandler handler)
+        {
+            if (!handler.Enabled)
+            {
+                return;
+            }
+
+            _logger.LogCritical(handler.ToStringAndClear());
+        }
+
+        public void Trace(Exception exception, [InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler)
+        {
+            if (!handler.Enabled)
+            {
+                return;
+            }
+
+            _logger.LogTrace(exception, handler.ToStringAndClear());
+        }
+
         public void Debug(Exception exception, [InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler)
         {
             if (!handler.Enabled)
@@ -137,5 +187,16 @@ namespace Nk7.Logger
 
             _logger.LogError(exception, handler.ToStringAndClear());
         }
+
+        public void Critical(Exception exception, [InterpolatedStringHandlerArgument("")] ref CriticalLogInterpolatedStringHandler handler)
+        {
+            if (!handler.Enabled)
+            {
+                return;
+            }
+
+            _logger.LogCritical(exception, handler.ToStringAndClear());
+        }
+
     }
 }
