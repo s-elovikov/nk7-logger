@@ -13,7 +13,7 @@ namespace Nk7.Logger.Editor
         private const string LangVersionLine = "-langversion:10";
         private const string LangVersion = "10";
 
-        private static readonly string RspPath = Path.Combine(Application.dataPath, "csc.rsp");
+        private static readonly string RspPath = Path.Combine(UnityEngine.Application.dataPath, "csc.rsp");
 
         private static string EditorPrefsKey => $"Nk7.Logger.CscRspInit::{Application.dataPath}";
 
