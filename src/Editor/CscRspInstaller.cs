@@ -11,11 +11,12 @@ namespace Nk7.Logger.Editor
     internal static class CscRspInstaller
     {
         private const string LangVersionLine = "-langversion:10";
-        private const string LangVersion = "10";
+        private static readonly Version RequiredLangVersion = new Version(10, 0);
+        private static readonly string[] LangVersionPrefixes = { "-langversion:", "/langversion:" };
 
         private static readonly string RspPath = Path.Combine(UnityEngine.Application.dataPath, "csc.rsp");
 
-        private static string EditorPrefsKey => $"Nk7.Logger.CscRspInit::{Application.dataPath}";
+        private static string EditorPrefsKey => $"MiniIT.Logger.CscRspInit::{UnityEngine.Application.dataPath}";
 
         static CscRspInstaller()
         {
@@ -33,7 +34,7 @@ namespace Nk7.Logger.Editor
             EditorPrefs.SetBool(EditorPrefsKey, true);
         }
 
-        [MenuItem("Nk7/Logger/Ensure C# 10 (csc.rsp)")]
+        [MenuItem("MiniIT/Logger/Ensure C# 10 (csc.rsp)")]
         private static void EnsureCscRspMenu()
         {
             EnsureCscRsp(force: true);
@@ -56,18 +57,38 @@ namespace Nk7.Logger.Editor
                 var lines = File.ReadAllLines(RspPath);
                 var updated = false;
                 var hasLangVersion = false;
+                var hasSufficientLangVersion = false;
 
                 for (var i = 0; i < lines.Length; ++i)
                 {
                     var trimmed = lines[i].Trim();
 
-                    if (trimmed.StartsWith("-langversion:", StringComparison.OrdinalIgnoreCase) ||
-                        trimmed.StartsWith("/langversion:", StringComparison.OrdinalIgnoreCase))
+                    if (TryGetLangVersionValue(trimmed, out var value))
                     {
                         hasLangVersion = true;
 
-                        if (!trimmed.Equals(LangVersionLine, StringComparison.OrdinalIgnoreCase) &&
-                            !trimmed.Equals("/langversion:" + LangVersion, StringComparison.OrdinalIgnoreCase))
+                        if (TryParseLangVersion(value, out var currentVersion))
+                        {
+                            if (currentVersion.CompareTo(RequiredLangVersion) < 0)
+                            {
+                                lines[i] = LangVersionLine;
+                                updated = true;
+                            }
+                            else
+                            {
+                                hasSufficientLangVersion = true;
+                            }
+                        }
+                        else if (IsNonNumericLangVersion(value))
+                        {
+                            hasSufficientLangVersion = true;
+                            if (force)
+                            {
+                                lines[i] = LangVersionLine;
+                                updated = true;
+                            }
+                        }
+                        else if (force)
                         {
                             lines[i] = LangVersionLine;
                             updated = true;
@@ -94,13 +115,72 @@ namespace Nk7.Logger.Editor
                 }
                 else if (force)
                 {
-                    Debug.Log("Assets/csc.rsp already uses -langversion:10.");
+                    var message = hasSufficientLangVersion
+                        ? "Assets/csc.rsp already uses langversion >= 10."
+                        : "Assets/csc.rsp already includes a langversion setting.";
+
+                    Debug.Log(message);
                 }
             }
             catch (Exception ex)
             {
                 Debug.LogError("Failed to ensure Assets/csc.rsp: " + ex.Message);
             }
+        }
+
+        private static bool TryGetLangVersionValue(string trimmedLine, out string value)
+        {
+            foreach (var prefix in LangVersionPrefixes)
+            {
+                if (!trimmedLine.StartsWith(prefix, StringComparison.OrdinalIgnoreCase))
+                {
+                    continue;
+                }
+
+                var raw = trimmedLine.Substring(prefix.Length).Trim();
+                var parts = raw.Split((char[])null, 2, StringSplitOptions.RemoveEmptyEntries);
+
+                value = parts.Length > 0 ? parts[0] : string.Empty;
+                return true;
+            }
+
+            value = string.Empty;
+            return false;
+        }
+
+        private static bool TryParseLangVersion(string value, out Version version)
+        {
+            var normalized = value.Trim();
+
+            if (string.IsNullOrEmpty(normalized))
+            {
+                version = null;
+                return false;
+            }
+
+            if (normalized.EndsWith(".", StringComparison.Ordinal))
+            {
+                normalized += "0";
+            }
+
+            for (var i = 0; i < normalized.Length; i++)
+            {
+                var ch = normalized[i];
+                if (!char.IsDigit(ch) && ch != '.')
+                {
+                    version = null;
+                    return false;
+                }
+            }
+
+            return Version.TryParse(normalized, out version);
+        }
+
+        private static bool IsNonNumericLangVersion(string value)
+        {
+            return value.Equals("latest", StringComparison.OrdinalIgnoreCase) ||
+                value.Equals("latestmajor", StringComparison.OrdinalIgnoreCase) ||
+                value.Equals("preview", StringComparison.OrdinalIgnoreCase);
         }
     }
 }
