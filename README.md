@@ -7,7 +7,7 @@ Lightweight logging service for Unity built on ZLogger and Microsoft.Extensions.
 - `ILoggerService` interface with Debug/Information/Warning/Error, string and interpolated-string overloads.
 - Interpolated string handlers backed by ZString, so disabled log levels skip formatting and allocations.
 - `ZLoggerFactory` wires ZLogger to Unity console via `UnityDebugStream` and adds an optional file sink.
-- Unity console messages get level prefixes (`[D]`, `[I]`, `[W]`, `[E]`) for quick scanning.
+- Unity console messages get level prefixes (`[T]`, `[D]`, `[I]`, `[W]`, `[E]`, `[C]`) for quick scanning.
 - `EmptyLoggerService` provides a no-op drop-in when logging is disabled.
 - Editor utility ensures C# 10 (`Assets/csc.rsp`) so interpolated string handlers compile in Unity.
 
@@ -57,7 +57,7 @@ Copy the `src` folder into your project and add `Nk7.Logger.asmdef` to the assem
 
 ## Lifecycle
 - `ZLoggerFactory` builds an `ILogger` pipeline with a Unity stream sink and optional file sink.
-- The Unity sink prefixes each entry (`[D]`, `[I]`, `[W]`, `[E]`) and routes it to `Debug.Log*`.
+- The Unity sink prefixes each entry (`[T]`, `[D]`, `[I]`, `[W]`, `[E]`, `[C]`) and routes it to `Debug.Log*`.
 - Interpolated string handlers check `IsEnabled` before allocating ZString builders.
 
 ## Inspector Tooling
