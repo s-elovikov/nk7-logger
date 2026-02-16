@@ -15,6 +15,13 @@ namespace Nk7.Logger
         void Error(string message);
         void Critical(string message);
 
+        public void Trace(Exception exception, string message);
+        public void Debug(Exception exception, string message);
+        public void Information(Exception exception, string message);
+        public void Warning(Exception exception, string message);
+        public void Error(Exception exception, string message);
+        public void Critical(Exception exception, string message);
+
         void Trace([InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler);
         void Debug([InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler);
         void Information([InterpolatedStringHandlerArgument("")] ref InformationLogInterpolatedStringHandler handler);
