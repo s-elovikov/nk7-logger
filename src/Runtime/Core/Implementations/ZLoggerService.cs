@@ -78,6 +78,66 @@ namespace Nk7.Logger
             _logger.LogCritical(message);
         }
 
+        public void Trace(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Trace))
+            {
+                return;
+            }
+
+            _logger.LogTrace(exception, message);
+        }
+
+        public void Debug(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Debug))
+            {
+                return;
+            }
+
+            _logger.LogDebug(exception, message);
+        }
+
+        public void Information(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
+
+            _logger.LogInformation(exception, message);
+        }
+
+        public void Warning(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Warning))
+            {
+                return;
+            }
+
+            _logger.LogWarning(exception, message);
+        }
+
+        public void Error(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Error))
+            {
+                return;
+            }
+
+            _logger.LogError(exception, message);
+        }
+
+        public void Critical(Exception exception, string message)
+        {
+            if (!IsEnabled(LogLevel.Critical))
+            {
+                return;
+            }
+
+            _logger.LogCritical(exception, message);
+        }
+
         public void Trace([InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler)
         {
             if (!handler.Enabled)
