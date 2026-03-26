@@ -9,7 +9,7 @@ Lightweight logging service for Unity built on ZLogger and Microsoft.Extensions.
 - `ZLoggerFactory` wires ZLogger to Unity console via `UnityDebugStream` and adds an optional file sink.
 - Unity console messages get level prefixes (`[T]`, `[D]`, `[I]`, `[W]`, `[E]`, `[C]`) for quick scanning.
 - `EmptyLoggerService` provides a no-op drop-in when logging is disabled.
-- Editor utility ensures C# 10 (`Assets/csc.rsp`) so interpolated string handlers compile in Unity.
+- Package includes `Runtime/csc.rsp` with `-langversion:10` for the asmdef.
 
 ## Table of Contents
 - [Installation](#installation)
@@ -21,7 +21,7 @@ Lightweight logging service for Unity built on ZLogger and Microsoft.Extensions.
   - [3. Wrap It](#3-wrap-it)
   - [4. Log Messages](#4-log-messages)
 - [Lifecycle](#lifecycle)
-- [Inspector Tooling](#inspector-tooling)
+- [C# 10 Configuration](#c-10-configuration)
 - [Runtime API](#runtime-api)
 - [Requirements](#requirements)
 
@@ -40,8 +40,8 @@ Copy the `src` folder into your project and add `Nk7.Logger.asmdef` to the assem
 ## Quick Start
 
 ### 1. Ensure C# 10
-- The editor script creates or updates `Assets/csc.rsp` with `-langversion:10` on first load.
-- You can also run `Nk7 → Logger → Ensure C# 10 (csc.rsp)` from the Unity menu.
+- C# 10 is configured by the package via `Runtime/csc.rsp` (`-langversion:10`).
+- No editor bootstrap script or menu action is required.
 
 ### 2. Create a Logger
 - Use `ZLoggerFactory.GetLogger` to create a `Microsoft.Extensions.Logging.ILogger`.
@@ -60,9 +60,9 @@ Copy the `src` folder into your project and add `Nk7.Logger.asmdef` to the assem
 - The Unity sink prefixes each entry (`[T]`, `[D]`, `[I]`, `[W]`, `[E]`, `[C]`) and routes it to `Debug.Log*`.
 - Interpolated string handlers check `IsEnabled` before allocating ZString builders.
 
-## Inspector Tooling
-- On editor load, the package ensures `Assets/csc.rsp` contains `-langversion:10` for C# 10 features.
-- The menu item `Nk7 → Logger → Ensure C# 10 (csc.rsp)` lets you re-apply the setting on demand.
+## C# 10 Configuration
+- The package ships `Runtime/csc.rsp` with `-langversion:10`.
+- Keep language version at 10+ if you customize compiler response files in your project.
 
 ## Runtime API
 
@@ -105,4 +105,4 @@ public sealed class LoggerExample : MonoBehaviour
 - Unity 6 (`6000.0+`)
 - `org.nuget.zlogger` 2.5.10
 - `org.nuget.zstring` 2.6.0
-- C# 10 (enabled via `Assets/csc.rsp`)
+- C# 10 (configured via `Runtime/csc.rsp`)
