@@ -102,7 +102,6 @@ public sealed class LoggerExample : MonoBehaviour
 
 ## Requirements
 
-- Unity 6 (`6000.0+`)
 - `org.nuget.zlogger` 2.5.10
 - `org.nuget.zstring` 2.6.0
 - C# 10 (configured via `Runtime/csc.rsp`)
