@@ -1,5 +1,5 @@
+using Cysharp.Text;
 using UnityEngine;
-using System.Text;
 using System.IO;
 using System;
 
@@ -17,12 +17,12 @@ namespace Nk7.Logger
 
         public override long Position { get; set; }
 
-        private readonly StringBuilder _buffer;
+        private Utf16ValueStringBuilder _buffer;
         private readonly byte _endOfString;
 
         public UnityDebugStream()
         {
-            _buffer = new StringBuilder();
+            _buffer = ZString.CreateStringBuilder();
             _endOfString = (byte)'\n';
         }
 
@@ -48,14 +48,21 @@ namespace Nk7.Logger
                 return;
             }
 
-            char prefix = _buffer[1];
+            ReadOnlySpan<char> span = _buffer.AsSpan();
+            char prefix = span[1];
 
-            _buffer.Remove(0, 4);
+            ReadOnlySpan<char> messageSpan = span.Slice(4);
+            int end = messageSpan.Length;
 
-            string message = _buffer.ToString().TrimEnd();
-
-            if (!string.IsNullOrEmpty(message) && message.Length > 0)
+            while (end > 0 && char.IsWhiteSpace(messageSpan[end - 1]))
             {
+                end--;
+            }
+
+            if (end > 0)
+            {
+                string message = messageSpan.Slice(0, end).ToString();
+
                 switch (prefix)
                 {
                     case UnityDebugFormatter.INFORMATION_PREFIX:
@@ -100,6 +107,7 @@ namespace Nk7.Logger
             if (disposing)
             {
                 Flush();
+                _buffer.Dispose();
             }
 
             base.Dispose(disposing);
