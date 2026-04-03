@@ -15,8 +15,6 @@ namespace Nk7.Logger
         public const char TRACE_PREFIX = 'T';
         public const char UNKNOWN_PREFIX = '?';
 
-        public const string PART_OF_PREFIX = "[{0}]";
-
         private readonly PlainTextZLoggerFormatter _inner = new PlainTextZLoggerFormatter();
 
         public bool WithLineBreak => _inner.WithLineBreak;
@@ -38,19 +36,9 @@ namespace Nk7.Logger
         private static void WritePrefix(IBufferWriter<byte> writer, LogLevel level)
         {
             var span = writer.GetSpan(4);
-            string prefix = GetLevelPrefix(level);
 
-            span[0] = (byte)prefix[0];
-            span[1] = (byte)prefix[1];
-            span[2] = (byte)prefix[2];
-            span[3] = (byte)' ';
-
-            writer.Advance(4);
-        }
-
-        private static string GetLevelPrefix(LogLevel level)
-        {
-            return string.Format(PART_OF_PREFIX, level switch
+            span[0] = (byte)'[';
+            span[1] = (byte)(level switch
             {
                 LogLevel.Critical => CRITICAL_PREFIX,
                 LogLevel.Error => ERROR_PREFIX,
@@ -60,6 +48,10 @@ namespace Nk7.Logger
                 LogLevel.Trace => TRACE_PREFIX,
                 _ => UNKNOWN_PREFIX
             });
+            span[2] = (byte)']';
+            span[3] = (byte)' ';
+
+            writer.Advance(4);
         }
     }
 }
