@@ -1,0 +1,22 @@
+using System.Runtime.CompilerServices;
+using System;
+
+namespace Nk7.Logger
+{
+    public interface IInterpolatedStringLoggerService : ILogLevelLoggerService
+    {
+        void Trace([InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler);
+        void Debug([InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler);
+        void Information([InterpolatedStringHandlerArgument("")] ref InformationLogInterpolatedStringHandler handler);
+        void Warning([InterpolatedStringHandlerArgument("")] ref WarningLogInterpolatedStringHandler handler);
+        void Error([InterpolatedStringHandlerArgument("")] ref ErrorLogInterpolatedStringHandler handler);
+        void Critical([InterpolatedStringHandlerArgument("")] ref CriticalLogInterpolatedStringHandler handler);
+
+        void Trace(Exception exception, [InterpolatedStringHandlerArgument("")] ref TraceLogInterpolatedStringHandler handler);
+        void Debug(Exception exception, [InterpolatedStringHandlerArgument("")] ref DebugLogInterpolatedStringHandler handler);
+        void Information(Exception exception, [InterpolatedStringHandlerArgument("")] ref InformationLogInterpolatedStringHandler handler);
+        void Warning(Exception exception, [InterpolatedStringHandlerArgument("")] ref WarningLogInterpolatedStringHandler handler);
+        void Error(Exception exception, [InterpolatedStringHandlerArgument("")] ref ErrorLogInterpolatedStringHandler handler);
+        void Critical(Exception exception, [InterpolatedStringHandlerArgument("")] ref CriticalLogInterpolatedStringHandler handler);
+    }
+}

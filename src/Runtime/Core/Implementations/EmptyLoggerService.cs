@@ -20,6 +20,18 @@ namespace Nk7.Logger
 
         public void Critical(string message) { }
 
+        public void Trace(Exception exception) { }
+
+        public void Debug(Exception exception) { }
+
+        public void Information(Exception exception) { }
+
+        public void Warning(Exception exception) { }
+
+        public void Error(Exception exception) { }
+
+        public void Critical(Exception exception) { }
+
         public void Trace(Exception exception, string message) { }
 
         public void Debug(Exception exception, string message) { }
