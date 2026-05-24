@@ -4,11 +4,11 @@ using System;
 
 namespace Nk7.Logger
 {
-    public sealed class ZLoggerService : ILoggerService
+    public sealed class LoggerService : ILoggerService
     {
         private readonly ILogger _logger;
 
-        public ZLoggerService(ILogger logger)
+        public LoggerService(ILogger logger)
         {
             _logger = logger;
         }
@@ -76,6 +76,66 @@ namespace Nk7.Logger
             }
 
             _logger.LogCritical(message);
+        }
+
+        public void Trace(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Trace))
+            {
+                return;
+            }
+
+            _logger.LogTrace(exception, exception.Message);
+        }
+
+        public void Debug(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Debug))
+            {
+                return;
+            }
+
+            _logger.LogDebug(exception, exception.Message);
+        }
+
+        public void Information(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Information))
+            {
+                return;
+            }
+
+            _logger.LogInformation(exception, exception.Message);
+        }
+
+        public void Warning(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Warning))
+            {
+                return;
+            }
+
+            _logger.LogWarning(exception, exception.Message);
+        }
+
+        public void Error(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Error))
+            {
+                return;
+            }
+
+            _logger.LogError(exception, exception.Message);
+        }
+
+        public void Critical(Exception exception)
+        {
+            if (!IsEnabled(LogLevel.Critical))
+            {
+                return;
+            }
+
+            _logger.LogCritical(exception, exception.Message);
         }
 
         public void Trace(Exception exception, string message)
@@ -257,6 +317,5 @@ namespace Nk7.Logger
 
             _logger.LogCritical(exception, handler.ToStringAndClear());
         }
-
     }
 }

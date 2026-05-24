@@ -13,7 +13,7 @@ namespace Nk7.Logger
         public WarningLogInterpolatedStringHandler(
             int literalLength,
             int formattedCount,
-            ILoggerService logger,
+            ILogLevelLoggerService logger,
             out bool enabled)
         {
             _core = new LogInterpolatedStringHandlerCore(

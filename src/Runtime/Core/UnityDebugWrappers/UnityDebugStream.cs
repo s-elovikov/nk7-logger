@@ -49,9 +49,9 @@ namespace Nk7.Logger
             }
 
             ReadOnlySpan<char> span = _buffer.AsSpan();
-            char prefix = span[1];
+            char prefix = span[0];
 
-            ReadOnlySpan<char> messageSpan = span.Slice(4);
+            ReadOnlySpan<char> messageSpan = span.Slice(1);
             int end = messageSpan.Length;
 
             while (end > 0 && char.IsWhiteSpace(messageSpan[end - 1]))

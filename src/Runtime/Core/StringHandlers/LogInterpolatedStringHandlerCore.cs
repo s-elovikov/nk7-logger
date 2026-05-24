@@ -14,7 +14,7 @@ namespace Nk7.Logger
         public LogInterpolatedStringHandlerCore(
             int literalLength,
             int formattedCount,
-            ILoggerService logger,
+            ILogLevelLoggerService logger,
             LogLevel level,
             out bool enabled)
         {

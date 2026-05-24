@@ -35,10 +35,9 @@ namespace Nk7.Logger
 
         private static void WritePrefix(IBufferWriter<byte> writer, LogLevel level)
         {
-            var span = writer.GetSpan(4);
+            var span = writer.GetSpan(1);
 
-            span[0] = (byte)'[';
-            span[1] = (byte)(level switch
+            span[0] = (byte)(level switch
             {
                 LogLevel.Critical => CRITICAL_PREFIX,
                 LogLevel.Error => ERROR_PREFIX,
@@ -48,10 +47,8 @@ namespace Nk7.Logger
                 LogLevel.Trace => TRACE_PREFIX,
                 _ => UNKNOWN_PREFIX
             });
-            span[2] = (byte)']';
-            span[3] = (byte)' ';
 
-            writer.Advance(4);
+            writer.Advance(1);
         }
     }
 }

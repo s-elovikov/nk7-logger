@@ -4,25 +4,24 @@ using ZLogger;
 
 namespace Nk7.Logger
 {
-    public static class ZLoggerFactory
+    public static class LoggerFactory
     {
         private static readonly UnityDebugFormatter _formatter;
 
-        static ZLoggerFactory()
+        static LoggerFactory()
         {
             _formatter = new UnityDebugFormatter();
         }
 
-        public static ILogger GetLogger(string loggerFilePath = null,
-            string categoryName = "Application", LogLevel minimumLogLevel = LogLevel.Error)
+        public static ILogger GetLogger(LogLevel minimumLogLevel = LogLevel.Error, string loggerFilePath = null)
         {
             return GetFactory(loggerFilePath, minimumLogLevel)
-                .CreateLogger(categoryName);
+                .CreateLogger("Application");
         }
 
         private static ILoggerFactory GetFactory(string loggerFilePath, LogLevel minimunLogLevel = LogLevel.None)
         {
-            return LoggerFactory.Create(builder =>
+            return Microsoft.Extensions.Logging.LoggerFactory.Create(builder =>
             {
                 builder.SetMinimumLevel(minimunLogLevel != LogLevel.None
                     ? minimunLogLevel
